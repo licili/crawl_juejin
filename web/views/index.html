@@ -1,0 +1,20 @@
+<%include header.html%>
+
+<body>
+  <ul>
+    <%tags.forEach(tag => { %>
+    <li>
+      <a href="/?tagId=<%=tag.id%>"><%=tag.name%></a></a>
+    </li>
+    <%}) %>
+  </ul>
+  <ul>
+    <%articles.forEach(article => { %>
+    <li>
+      <a href="/?tagId=<%=tag.id%>"><%=article.name%></a></a>
+    </li>
+    <%}) %>
+  </ul>
+
+</body>
+<%include footer.html%>
