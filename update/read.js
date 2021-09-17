@@ -65,6 +65,7 @@ exports.articleList = async function (url,page) {
   //   height:1080
   // })
 
+  console.log(`开始爬取${url} 页面的数据`)
   await page.goto(url)
 
   await sleep(3000);
@@ -82,7 +83,7 @@ exports.articleList = async function (url,page) {
     })
   })
 
-  for (let i = 0; i < result.length; i++) {
+  for (let i = 0; i < 1; i++) {
     let res = result[i]
     await page.goto(res.href)
     await sleep(3000);
@@ -91,10 +92,12 @@ exports.articleList = async function (url,page) {
     let tags = await page.$$eval('.tag-title',tags => [... new Set(tags.map(tag => tag.innerText))])
     result[i].content = content
     result[i].tags = tags
+    console.log('读取完${i+1} 条')
   }
 
 
 
+  console.log('爬取完毕')
   // await browser.close()
   return result
 }

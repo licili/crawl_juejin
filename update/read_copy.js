@@ -45,7 +45,7 @@ exports.tags = async function (url) {
 
 
 exports.articleList = async function (url) {
-  // console.log('进来了')
+  console.log('开始爬取articleList')
 
   let browser = await puppeteer.launch({
     args: [
@@ -60,8 +60,8 @@ exports.articleList = async function (url) {
   })
 
   await page.goto(url)
-
-  await sleep(3000);
+  console.log('进入url')
+  await sleep(1000);
 
   let result = await page.$$eval('.content-box .content-main a.title', links => {
     return links.map( link => {
@@ -85,10 +85,11 @@ exports.articleList = async function (url) {
     let tags = await page.$$eval('.tag-title',tags => [... new Set(tags.map(tag => tag.innerText))])
     result[i].content = 'content'
     result[i].tags = tags
+    console.log(`爬取完${i+1}条数据`)
   }
 
 
-
+  console.log(`爬取完闭`)
   await browser.close()
   return result
 }
