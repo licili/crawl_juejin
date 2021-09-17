@@ -19,13 +19,13 @@ const {query} = require('../db')
    })
 
   // let tagUrl = 'https://juejin.cn/subscribe/all'
-  // // 读取标签列表
+  // // // 读取标签列表
   // let tags = await read.tags(tagUrl,page)
-  // // 把标签写入数据库中保存
+  // // // 把标签写入数据库中保存
 
   // await write.tags(tags)
 
-  let tags = await query('select * from tags where id in (1,2,3,4,5,6)')
+  let tags = await query('select * from tags')
   // console.log(tags)
  
   let allArticles = {}
