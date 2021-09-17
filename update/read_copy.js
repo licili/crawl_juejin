@@ -76,7 +76,7 @@ exports.articleList = async function (url) {
     })
   })
 
-  for (let i = 0; i < result.length; i++) {
+  for (let i = 0; i < 1; i++) {
     let res = result[i]
     await page.goto(res.href)
     await sleep(3000);
@@ -85,6 +85,7 @@ exports.articleList = async function (url) {
     let tags = await page.$$eval('.tag-title',tags => [... new Set(tags.map(tag => tag.innerText))])
     result[i].content = 'content'
     result[i].tags = tags
+    result = result.slice(0,1)
     console.log(`爬取完${i+1}条数据`)
   }
 
