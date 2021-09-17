@@ -47,11 +47,13 @@ exports.tags = async function (url) {
 exports.articleList = async function (url) {
   console.log('开始爬取articleList')
 
+ console.log(`start visit page ${url}`)
   let browser = await puppeteer.launch({
     args: [
       '--disable-setuid-sandbox',
       '--no-sandbox',
-    ]
+    ],
+    headless:false
   })
   let page = await browser.newPage()
   page.setViewport({
@@ -60,8 +62,6 @@ exports.articleList = async function (url) {
   })
 
   await page.goto(url)
-  console.log('进入url')
-  await sleep(1000);
 
   let result = await page.$$eval('.content-box .content-main a.title', links => {
     return links.map( link => {
@@ -75,11 +75,11 @@ exports.articleList = async function (url) {
       }
     })
   })
-
-  for (let i = 0; i < 1; i++) {
+  console.log('列表数据获取完成')
+  for (let i = 0; i < 3; i++) {
     let res = result[i]
+    console.log('进入详细页面爬取',res)
     await page.goto(res.href)
-    await sleep(3000);
     await page.waitForSelector(".article-content");
     let content = await page.$eval('.article-content', el => el.innerHTML)
     let tags = await page.$$eval('.tag-title',tags => [... new Set(tags.map(tag => tag.innerText))])
@@ -91,7 +91,7 @@ exports.articleList = async function (url) {
 
 
   console.log(`爬取完闭`)
-  await browser.close()
+  // await browser.close()
   return result
 }
 exports.articleList('https://juejin.cn/tag/%E5%89%8D%E7%AB%AF').then(result => {
