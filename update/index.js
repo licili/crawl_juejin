@@ -10,7 +10,7 @@ const {query} = require('../db')
        '--no-sandbox',
      ],
      headless: false,
-     userDataDir: "./data"
+    //  userDataDir: "./data"
    })
    let page = await browser.newPage()
    page.setViewport({
