@@ -9,7 +9,7 @@ const {query} = require('../db')
        '--disable-setuid-sandbox',
        '--no-sandbox',
      ],
-     headless: false,
+    //  headless: false,
     //  userDataDir: "./data"
    })
    let page = await browser.newPage()
