@@ -1,0 +1,28 @@
+  <!-- 头部复用部分复用的部分 -->
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <title>Document</title>
+    <!-- 引入 layui.css -->
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+  </head>
+  <ul class="layui-nav nav" lay-filter="">
+    <li class="layui-nav-item"><a href="">juejin</a></a></li>
+    <li class="layui-nav-item layui-this"><a href="">文章</a></li>
+  </ul>
+
+
+  <div class="layui-row">
+
+    <div class="layui-col-md2">
+      <ul class="layui-nav layui-nav-tree layui-bg-gray  layui-nav-child-c" lay-filter="test">
+        <% tags.forEach(function(tag) { %>
+        <li class="layui-nav-item"><a class="layui-font-black" href="/?tagId=<%= tag.id %>"><%= tag.name%></a></li>
+        <%})%>
+      </ul>
+    </div>
+    <div class="layui-col-md9 content">

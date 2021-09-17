@@ -1,0 +1,17 @@
+<%- include('header.html'); -%>
+
+<h1><%=article.title %></h1>
+<div class="tag">
+  <% articleTags.forEach(function(tag) {%>
+  <span class="layui-badge"><%=tag.name%></span></span>
+  <%})%>
+</div>
+<article><%- article.content%></article>
+
+<style>
+  .tag {
+    margin-top: 10px;
+  }
+</style>
+
+<%- include('footer.html'); -%>

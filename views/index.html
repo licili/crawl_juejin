@@ -1,0 +1,11 @@
+<%- include('header.html'); -%>
+
+<ul>
+  <% articles.forEach(function(article) { %>
+  <li class="article_list"><a href="/detail/<%= article.id %>"><%= article.title%></a></li>
+  <%})%>
+</ul>
+
+
+
+<%- include('footer.html'); -%>
