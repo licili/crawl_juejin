@@ -85,20 +85,20 @@ exports.articleList = async function (url, page) {
     })
   })
 
-  for (let i = 0; i < 1; i++) {
-    console.log('进入详细页面爬取',result[i],i)
+  for (let i = 0; i < result.length; i++) {
+    console.log(`读取《${result[i].title}》 详细内容`,i)
     await page.goto(result[i].href,{timeout:0})
     await sleep(3000);
     await page.waitForSelector(".article-content");
     let content = await page.$eval('.article-content', el => el.innerHTML)
     let tags = await page.$$eval('.tag-title',tags => [... new Set(tags.map(tag => tag.innerText))])
-    result[i].content = content
+    result[i].content = 'content'
     result[i].tags = tags
-    console.log('读取完${i+1} 条')
+    console.log(`读取成功${i + 1} 条`)
+    console.log(result[i])
   }
 
   console.log('爬取完毕')
-  await browser.close()
   return result
 }
 // exports.articleList('https://juejin.cn/tag/%E5%89%8D%E7%AB%AF').then(result => {

@@ -24,9 +24,9 @@ const {query} = require('../db')
   // 把标签写入数据库中保存
   console.log('标签读取成功')
 
-  await write.tags(tags)
+  // await write.tags(tags)
 
-  let tags = await query('select * from tags')
+  // let tags = await query('select * from tags')
   // console.log(tags)
  
   let allArticles = {}
@@ -36,9 +36,10 @@ const {query} = require('../db')
     let articles = await read.articleList(`https://juejin.cn${tag.href}`,page)
     articles.forEach(article => allArticles[article.id] = article)
   }
+  console.log(allArticles)
   // {id,article}
   // 保存文章
-  await write.articles(Object.values(allArticles))
+  // await write.articles(Object.values(allArticles))
   // 退出
   process.exit()
 })()

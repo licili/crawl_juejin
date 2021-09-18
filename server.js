@@ -31,17 +31,17 @@ app.listen(8080,_ => {
 })
 
 // 定时执行任务
-// const CronJob = require('cron').CronJob
+const CronJob = require('cron').CronJob
 // // 引入子进程
-// const {spawn} = require('child_process')
+const {spawn} = require('child_process')
 // // 每个30min跑一次index.js
-// const job = new CronJob('0*/30****', function () {
-//   let child = spawn(process.execPath, [path.resolve(__dirname, 'update/indexjs')])
-//   // 子进程输出，有日志就打印
-//   child.stdout.pipe(process.stdout)
-//   child.stderr.pipe(process.stderr)
-//   child.on('error', function () {
-//     console.log('任务执行出错')
-//   })
-// })
-// job.start()
+const job = new CronJob('0 */30 * * * *', function () {
+  let child = spawn(process.execPath, [path.resolve(__dirname, 'update/indexjs')])
+  // 子进程输出，有日志就打印
+  child.stdout.pipe(process.stdout)
+  child.stderr.pipe(process.stderr)
+  child.on('error', function () {
+    console.log('任务执行出错')
+  })
+})
+job.start()
