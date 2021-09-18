@@ -20,17 +20,17 @@ const {query} = require('../db')
 
   let tagUrl = 'https://juejin.cn/subscribe/all'
   // 读取标签列表
-  let tags = await read.tags(tagUrl,page)
+  // let tags = await read.tags(tagUrl,page)
   // 把标签写入数据库中保存
   console.log('标签读取成功')
 
   // await write.tags(tags)
 
-  // let tags = await query('select * from tags')
-  // console.log(tags)
+  let tags = await query('select * from tags')
+  console.log(tags)
  
   let allArticles = {}
-  // // 标签有很多，不同的标签下面的文章可能会重复
+  // 标签有很多，不同的标签下面的文章可能会重复
   for (tag of tags) {
     console.log(`开始读取${tag.name}的文章`)
     let articles = await read.articleList(`https://juejin.cn${tag.href}`,page)
@@ -39,7 +39,7 @@ const {query} = require('../db')
   console.log(allArticles)
   // {id,article}
   // 保存文章
-  // await write.articles(Object.values(allArticles))
+  await write.articles(Object.values(allArticles))
   // 退出
   process.exit()
 })()

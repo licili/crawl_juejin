@@ -1,35 +1,13 @@
-const puppeteer = require('puppeteer')
-const cheerio = require('cheerio')
-const fs = require('fs')
-
 const sleep = time=>new Promise(resolve=>{
     setTimeout(resolve,time)
 })
 
 
-
-  
-
 exports.tags = async function (url,page) {
-  // console.log(`start visit page ${url}`)
-  // let browser = await puppeteer.launch({
-  //   args: [
-  //     '--disable-setuid-sandbox',
-  //     '--no-sandbox',
-  //   ],
-  //   headless: false,
-  //   userDataDir: "./data"
-  // })
-  // let page = await browser.newPage()
-  // page.setViewport({
-  //   width: 1920,
-  //   height:1080
-  // })
 
   await page.goto(url, {
     timeout:0
   })
-
   await sleep(3000);
   let result = await page.$$eval('.tag-list .item .info-box', lists => lists.filter((item,index) => index <= 5).map(list => {
     let href = list.querySelector('a').getAttribute('href')
@@ -45,27 +23,7 @@ exports.tags = async function (url,page) {
 }
 
 
-// exports.tags('https://juejin.cn/subscribe/all').then(res => {
-//   console.log(res)
-// })
-
-
 exports.articleList = async function (url, page) {
-  // console.log('进来了')
-
-  // let browser = await puppeteer.launch({
-  //   args: [
-  //     '--disable-setuid-sandbox',
-  //     '--no-sandbox',
-  //   ],
-  //   headless: false,
-  //   userDataDir: "./data"
-  // })
-  // let page = await browser.newPage()
-  // page.setViewport({
-  //   width: 1920,
-  //   height:1080
-  // })
 
   console.log(`开始爬取${url} 页面的数据`)
   await page.goto(url, { timeout: 0 })
@@ -84,7 +42,6 @@ exports.articleList = async function (url, page) {
       }
     })
   })
-
   for (let i = 0; i < result.length; i++) {
     console.log(`读取《${result[i].title}》 详细内容`,i)
     await page.goto(result[i].href,{timeout:0})
@@ -92,17 +49,12 @@ exports.articleList = async function (url, page) {
     await page.waitForSelector(".article-content");
     let content = await page.$eval('.article-content', el => el.innerHTML)
     let tags = await page.$$eval('.tag-title',tags => [... new Set(tags.map(tag => tag.innerText))])
-    result[i].content = 'content'
+    result[i].content = content
     result[i].tags = tags
     console.log(`读取成功${i + 1} 条`)
-    console.log(result[i])
   }
-
   console.log('爬取完毕')
   return result
 }
-// exports.articleList('https://juejin.cn/tag/%E5%89%8D%E7%AB%AF').then(result => {
-//   console.log(result)
-// })
 
 
