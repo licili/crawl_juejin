@@ -46,14 +46,13 @@ exports.tags = async function (url) {
 
 exports.articleList = async function (url) {
   console.log('开始爬取articleList')
-
- console.log(`start visit page ${url}`)
+  console.log(`start visit page ${url}`)
   let browser = await puppeteer.launch({
     args: [
-      '--disable-setuid-sandbox',
-      '--no-sandbox',
+      // '--disable-setuid-sandbox',
+      // '--no-sandbox',
     ],
-    headless:false
+    // headless:false
   })
   let page = await browser.newPage()
   page.setViewport({
@@ -61,8 +60,9 @@ exports.articleList = async function (url) {
     height:1080
   })
 
-  await page.goto(url)
-
+  await page.goto(url, { timeout: 0 })
+  await page.waitForSelector(".content-box .content-main a.title");
+  await sleep(2000)
   let result = await page.$$eval('.content-box .content-main a.title', links => {
     return links.map( link => {
       let title = link.innerText
@@ -77,21 +77,21 @@ exports.articleList = async function (url) {
   })
   console.log('列表数据获取完成')
   for (let i = 0; i < 3; i++) {
-    let res = result[i]
-    console.log('进入详细页面爬取',res)
-    await page.goto(res.href)
+    console.log('进入详细页面爬取',result[i],i)
+    await page.goto(result[i].href,{timeout:0})
+    await sleep(3000)
     await page.waitForSelector(".article-content");
     let content = await page.$eval('.article-content', el => el.innerHTML)
     let tags = await page.$$eval('.tag-title',tags => [... new Set(tags.map(tag => tag.innerText))])
     result[i].content = 'content'
     result[i].tags = tags
-    result = result.slice(0,1)
+    // result = result.slice(0,1)
     console.log(`爬取完${i+1}条数据`)
   }
 
 
   console.log(`爬取完闭`)
-  // await browser.close()
+  await browser.close()
   return result
 }
 exports.articleList('https://juejin.cn/tag/%E5%89%8D%E7%AB%AF').then(result => {
